@@ -1,0 +1,136 @@
+% ----------------------------------------------------------------------
+\begin{frame}{Motivation}
+  \begin{itemize}
+  \item Aggregates provide a general way to obtain a single value from a
+    collection of input values
+  \item Popular aggregate (functions)
+    \begin{itemize}
+    \item average
+    \item count
+    \item maximum
+    \item minimum
+    \item sum
+    \end{itemize}
+  \item Cardinality and weight constraints rely on count and sum aggregates
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Syntax}
+  \begin{itemize}
+  \item
+    An \alert{aggregate} has the form:
+    \[
+    \alpha~\{ w_1:a_1,\dots,w_m:a_m,w_{m+1}:{\neg a_{m+1}},\dots,w_n:{\neg a_n} \} \prec k
+    \]
+    where for $1 \leq i \leq n$
+    \begin{itemize}
+    \item $\alpha$ stands for a function mapping multisets over $\mathbb{Z}$ to $\mathbb{Z} \cup \{+\infty, -\infty\}$
+    \item $\prec$ stands for a relation between $\mathbb{Z}\cup\{+\infty, -\infty\}$ and $\mathbb{Z}$
+    \item $k\in\mathbb{Z}$
+    \item $a_i$ are atoms  and
+    \item $w_i$ are integers
+    \end{itemize}
+  \item \structure{Example}
+    \(
+    \mathit{sum}~\{ 30:hd(a),\dots,50:hd(m) \} \leq 300
+    \)
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Semantics}
+  \begin{itemize}
+  \item
+    A (positive) aggregate \ $\alpha~\{ w_1:a_1, \dots, w_n:a_n \} \prec k$
+    \par
+    can be represented by the formula:
+    \[
+    \bigwedge_{I \subseteq \{1,\dots,n\}, \alpha \{ w_i \mid i \in I \} \not \prec k}
+    \left(
+      \bigwedge_{i \in I} a_i \rightarrow \bigvee_{i \in \overline{I}} a_i
+    \right)
+    \]
+    where $\overline{I} = \{1,\dots,n\}\setminus I$ and $\not\prec$ is the
+    complement of $\prec$
+
+  \item Then,
+    $\alpha~\{ w_1:a_1, \dots, w_n:a_n \} \prec k$ is true in $X$
+    iff\\
+    the above formula is true in $X$
+  \end{itemize}
+\end{frame}
+% ------------------------------------------------------------
+\begin{frame}{Example}
+  \begin{itemize}
+  \item Consider $\mathit{sum}\{ 1:p,1:q\}\neq 1$
+
+    That is, $a_1=p$,  $a_2=q$ and  $w_1=1$,  $w_2=1$
+
+  \item Calculemus!
+    \[
+    \begin{array}{c|c|c|c}
+      I & \{ w_i \mid i \in I \} & \sum\{ w_i \mid i \in I \}   &  \sum\{ w_i \mid i \in I \} = 1\\
+      \hline
+      \emptyset&\{    \}&0&\mathit{false}\\
+      \{1\}    &\{ 1  \}&1&\mathit{true}\\
+      \{2\}    &\{   1\}&1&\mathit{true}\\
+      \{1,2\}  &\{ 1,1\}&2&\mathit{false}
+    \end{array}
+    \]\pause
+  \item We get
+    \(
+    (p\to q)\wedge (q\to p)
+    \)
+    \pause
+  \item Analogously, we obtain
+    \(
+    (p\vee q)\wedge \neg (p\wedge q)
+    \)
+    for
+    $\mathit{sum}\{ 1:p,1:q\}=1$
+  \end{itemize}
+\end{frame}
+% ------------------------------------------------------------
+\begin{frame}{Monotonicity}
+  \smallskip
+  \begin{itemize}
+  \item \structure{Monotone aggregates} \
+    \begin{itemize}
+    \item For instance,
+      \begin{itemize}
+      \item \pbody{r}
+      \item $\mathit{sum}\{1:p,1:q\}>1$ \ \onslide<2-> amounts to $p\wedge q$\onslide<1->
+      \end{itemize}
+    \item We get a simpler characterization:
+      \(
+      \bigwedge_{I \subseteq \{1,\dots,n\}, \alpha \{ w_i \mid i \in I \} \not \prec k}
+      \bigvee_{i \in \overline{I}} a_i
+      \)
+    \end{itemize}
+    \smallskip
+  \item \structure{Anti-monotone aggregates} \
+    \begin{itemize}
+    \item For instance,
+      \begin{itemize}
+      \item \nbody{r}
+      \item $\mathit{sum}\{1:p,1:q\}<1$ \ \onslide<2-> amounts to $\neg p\wedge\neg q$\onslide<1->
+      \end{itemize}
+    \item  We get a simpler characterization:
+      \(
+      \bigwedge_{I \subseteq \{1,\dots,n\}, \alpha \{ w_i \mid i \in I \} \not \prec k}
+      \neg\bigwedge_{i \in I} a_i
+      \)
+    \end{itemize}
+    \smallskip
+  \item \structure{Non-monotone aggregates} \
+    \begin{itemize}
+    \item For instance, $\mathit{sum}\{1:p,1:q\}\neq 1$
+      is non-monotone.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------
+%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../main"
+%%% End:

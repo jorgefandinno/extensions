@@ -1,0 +1,344 @@
+% ----------------------------------------------------------------------
+\begin{frame}{Disjunctive logic programs}
+  \label{eqn:rule:disjunctive}
+  \begin{itemize}
+  \item
+    A \alert{disjunctive rule}, $r$, is of the form
+    \[
+    a_1\;;\dots\;;a_m\leftarrow a_{m+1},\dots,a_n,{\neg a_{n+1}},\dots,{\neg a_o}
+    \]
+    where $0\leq m\leq n\leq o$ and each $a_i$ is an atom for $0\leq i\leq o$
+  \item
+    A \alert{disjunctive logic program} is a finite {set} of disjunctive rules
+  \item <2->\structure{Notation}
+    \begin{eqnarray*}
+      \Head{r}   &=& \{a_1,\dots,a_m\}
+      \\
+      \body{r}   &=& \{a_{m+1},\dots,a_n, {\neg a_{n+1}},\dots,{\neg a_o}\}
+      \\
+      \pbody{r}  &=& \{a_{m+1},\dots,a_n\}
+      \\
+      \nbody{r}  &=& \{a_{n+1},\dots,a_o\}
+      \\
+     \atom{P} &=& \mbox{$\bigcup$}_{r\in P}\left(\Head{r}\cup\pbody{r}\cup\nbody{r}\right)
+      \\
+     \body{P} &=& \{\body{r}\mid r\in P\}
+    \end{eqnarray*}
+  \item<3-> A program is called \alert{positive} if $\nbody{r}=\emptyset$ for all its rules
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Stable models}
+  \begin{itemize}
+  \item \structure{Positive programs}
+    \begin{itemize}
+    \item A set $X$ of atoms is \alert{closed under} a positive program $P$ iff
+      \\for any $r\in P$, $\Head{r}\cap X\neq\emptyset$ whenever $\pbody{r}\subseteq X$
+      \begin{itemize}
+      \item $X$ corresponds to a model of $P$ (seen as a formula)
+      \end{itemize}
+    \item The set of all $\subseteq$-minimal sets of atoms being closed under a positive
+      program $P$ is denoted by $\min_\subseteq(P)$
+      \begin{itemize}
+      \item $\min_\subseteq(P)$ corresponds to the $\subseteq$-minimal models of $P$ (ditto)
+      \end{itemize}
+    \end{itemize}
+  \item<2-> \structure{Disjunctive programs}
+    \begin{itemize}
+    \item<2-> The \alert{reduct}, $\reduct{P}{X}$, of a disjunctive program $P$ relative to
+      a set $X$ of atoms is defined by
+      \[
+      \reduct{P}{X}
+      =
+      \{\Head{r}\leftarrow\pbody{r} \mid r\in P \text{ and } \nbody{r}\cap X=\emptyset\}
+      \]
+    \item<3-> A set $X$ of atoms is a \alert{stable model} of a disjunctive program $P$,\\
+      if $X\in\min_\subseteq(\reduct{P}{X})$
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{A ``positive'' example}
+\[
+P
+=
+\left\{
+  \begin{array}{lcl}
+    a&\leftarrow&
+    \\
+    b\;;c&\leftarrow& a
+  \end{array}
+\right\}
+\]
+
+\pause
+
+\begin{itemize}
+\item The sets $\{a,b\}$, $\{a,c\}$, and $\{a,b,c\}$ are closed under $P$
+  \pause
+\item We have $\min_\subseteq(P)=\{  \{a,b\},  \{a,c\}  \}$
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}[fragile]{Graph coloring (reloaded)}
+\begin{semiverbatim}
+node(1..6).
+
+edge(1,(2;3;4)).  edge(2,(4;5;6)).  edge(3,(1;4;5)).
+edge(4,(1;2)).    edge(5,(3;4;6)).  edge(6,(2;3;5)).
+
+\only<2>{color(r).   color(b).   color(g).}
+\only<1>{assign(X,r) ; assign(X,b) ; assign(X,g) :- node(X).}
+\only<2>{assign(X,C) : color(C) :- node(X).}
+
+:- edge(X,Y), assign(X,C), assign(Y,C).
+\end{semiverbatim}
+\end{frame}
+% ------------------------------------------------------------
+\begin{frame}{More Examples}
+  \bigskip
+  \begin{itemize}\itemsep 2ex
+  \item<1-2,9>
+    \(
+    P_1=\{a\;;b\;;c\leftarrow\}
+    \)
+    \begin{itemize}
+    \item<2,9> stable models $\{a\}$, $\{b\}$, and $\{c\}$
+    \end{itemize}
+  \item<3-4,9>
+    \(
+    P_2=\{a\;;b\;;c\leftarrow \ ,\ \leftarrow a\}
+    \)
+    \begin{itemize}
+    \item<4,9> stable models $\{b\}$ and $\{c\}$\pause
+    \end{itemize}
+  \item<5-6,9>
+    \(
+    P_3=\{a\;;b\;;c\leftarrow \ ,\ \leftarrow a\ ,\ b \leftarrow c\ ,\ c \leftarrow b  \}
+    \)
+    \begin{itemize}
+    \item<6,9> stable model $\{b,c\}$
+    \end{itemize}
+  \item<7-8,9>
+    \(
+    P_4=\{a\;;b\leftarrow c\ ,\ b \leftarrow {\neg a}, {\neg c}\ ,\ a\;;c \leftarrow {\neg b}  \}
+    \)
+    \begin{itemize}
+    \item<8,9> stable models $\{a\}$ and $\{b\}$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Some properties}
+\bigskip\bigskip
+  \begin{itemize}
+  \item A disjunctive logic program may have zero, one, or multiple stable models
+
+  \item If $X$ is a  stable model of a disjunctive logic program $P$,
+
+    then $X$ is a model of $P$ (seen as a formula)
+  \item If $X$ and $Y$ are stable models of a disjunctive logic program $P$,
+
+    then $X\not\subset Y$
+    \bigskip
+  \item<2> If $a\in X$ for some stable model $X$ of a disjunctive logic program $P$,
+    then there is a rule
+% $r\in\{r\in P \mid \pbody{r}\subseteq X \text{ and } \nbody{r}\cap X=\emptyset\}$
+    $r\in P$
+    such that\\
+    $\pbody{r}\subseteq X$, $\nbody{r}\cap X=\emptyset$, and
+    $\Head{r}\cap X=\{a\}$
+%     $\{a\}=\Head{r}\cap X$
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{An example with variables}
+
+\begin{eqnarray*}
+P
+&=&
+\left\{
+  \begin{array}{lcl}
+    a(1,2)&\leftarrow&
+    \\
+    b(X)\;;c(Y)&\leftarrow& a(X,Y), {\neg c(Y)}
+  \end{array}
+\right\}
+\\
+&&
+\\
+\onslide<2->{\mathit{ground}(P)}
+&\onslide<2->{=}&
+\onslide<2->{\left\{
+  \begin{array}{lcl}
+    a(1,2)&\leftarrow&
+    \\
+    b(1)\;;c(1)&\leftarrow& a(1,1), {\neg c(1)}
+    \\
+    b(1)\;;c(2)&\leftarrow& a(1,2), {\neg c(2)}
+    \\
+    b(2)\;;c(1)&\leftarrow& a(2,1), {\neg c(1)}
+    \\
+    b(2)\;;c(2)&\leftarrow& a(2,2), {\neg c(2)}
+  \end{array}
+\right\}}
+\end{eqnarray*}
+
+\onslide<3->{%
+For every stable model $X$ of $P$, we have
+\begin{itemize}
+\item $a(1,2)\in X$ and
+\item $\{a(1,1),a(2,1),a(2,2)\}\cap X=\emptyset$
+\end{itemize}}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{An example with variables}
+
+  \begin{eqnarray*}
+    \mathit{ground}(P)\uncover<3->{^X}
+    &=&
+    \left\{
+      \begin{array}{lcl}
+        a(1,2)&\leftarrow&
+        \\
+        b(1)\;;c(1)&\leftarrow& a(1,1)\uncover<-2>{, {\neg c(1)}}
+        \\
+        b(1)\;;c(2)&\leftarrow& a(1,2)\uncover<-2>{, {\neg c(2)}}
+        \\
+        b(2)\;;c(1)&\leftarrow& a(2,1)\uncover<-2>{, {\neg c(1)}}
+        \\
+        b(2)\;;c(2)&\leftarrow& a(2,2)\uncover<-2>{, {\neg c(2)}}
+      \end{array}
+    \right\}
+  \end{eqnarray*}
+
+\begin{itemize}
+\item<2->
+Consider $X=\{a(1,2),  b(1)\}$
+\item <4->
+We get
+\(
+\min_\subseteq(\mathit{ground}(P)^X)
+=
+\{\ \{a(1,2),  b(1)\},\ \{a(1,2),  c(2)\}\ \}
+\)
+\item<5->
+$X$ is a  stable model of $P$ because
+\(
+X\in\min_\subseteq(\mathit{ground}(P)^X)
+\)
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{An example with variables}
+
+  \begin{eqnarray*}
+    \mathit{ground}(P)\uncover<3->{^X}
+    &=&
+    \left\{
+      \begin{array}{lcl}
+        a(1,2)&\leftarrow&
+        \\
+        b(1)\;;c(1)&\leftarrow& a(1,1)\uncover<-2>{, {\neg c(1)}}
+        \\
+\uncover<-2>{b(1)\;;c(2)}&\uncover<-2>{\leftarrow}&\uncover<-2>{a(1,2), {\neg c(2)}}
+        \\
+        b(2)\;;c(1)&\leftarrow& a(2,1)\uncover<-2>{, {\neg c(1)}}
+        \\
+\uncover<-2>{b(2)\;;c(2)}&\uncover<-2>{\leftarrow}&\uncover<-2>{a(2,2), {\neg c(2)}}
+  \end{array}
+\right\}
+\end{eqnarray*}
+
+\begin{itemize}
+\item <2->
+Consider $X=\{a(1,2),  c(2)\}$
+\item <4->
+We get
+\(
+\min_\subseteq(\mathit{ground}(P)^X)
+=
+\{\ \{a(1,2)\}\ \}
+\)
+\item<5->
+$X$ is no stable model of $P$ because
+\(
+X\not\in\min_\subseteq(\mathit{ground}(P)^X)
+\)
+\end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------
+\begin{frame}{Default negation in rule heads}
+  \begin{itemize}
+  \item<1-> Consider disjunctive rules of the form
+    \[
+    a_1\;;\dots\;;a_m\;;{\neg a_{m+1}}\;;\dots\;;{\neg a_n}
+    \leftarrow
+    a_{n+1},\dots,a_o,{\neg a_{o+1}},\dots,{\neg a_p}
+    \]
+    where $0\leq m\leq n\leq o\leq p$ and each $a_i$ is an atom for $0\leq i\leq p$
+
+  \item<2-> Given a program $P$ over $\mathcal{A}$, consider the program
+    \begin{eqnarray*}
+      \widetilde{P}
+      &=&\phantom{\cup\ }
+%      \{r\mid r\in P,\neglits{\Head{r}}=\emptyset\}
+      % \\
+      % &&\cup\
+      % \{
+      % \poslits{\Head{r}}\cup\{\tilde{a}\mid a\in\neglits{\Head{r}}\}
+      % \leftarrow\body{r}\mid
+      % \\&&\qquad\qquad\qquad\qquad\qquad\qquad\qquad
+      %  r\in P, \neglits{\Head{r}}\neq\emptyset
+      % \}
+\{\poslits{\Head{r}}\leftarrow \body{r}\cup\{{\neg \widetilde{a}}\mid a\in\neglits{\Head{r}}\}\mid r\in P\}
+      \\
+      &&\cup\
+      % \{
+      % \leftarrow a,\tilde{a},\quad
+      % \tilde{a}\leftarrow{\neg a}
+      % \mid
+      % {\neg a}\in\Head{P}
+      %   \}
+\{\widetilde{a}\leftarrow{\neg a}\mid r\in P \text{ and } a\in\neglits{\Head{r}}\}
+    \end{eqnarray*}
+  \item<3->
+    A set~$X$ of atoms is a \alert{stable model} of a disjunctive program~$P$\\
+    (with default negation in rule heads) over $\mathcal{A}$,
+    \\
+    if $X=Y\cap\mathcal{A}$ for some stable model $Y$ of $\widetilde{P}$ over $\mathcal{A}\cup\widetilde{\mathcal{A}}$
+  \end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------
+\begin{frame}{An example}
+  \begin{itemize}
+  \item<1-> The program
+    \[
+    P = \{ a\;;\, {\neg a} \leftarrow \}
+    \]
+  \item<2-> [] yields
+    \[
+    \widetilde{P}
+    =
+%    \{ a\;;\, \tilde{a} \leftarrow \}
+    \{
+    a \leftarrow {\neg \widetilde{a}}
+    \}
+    \cup
+    \{
+    \widetilde{a}\leftarrow{\neg a}
+%    \leftarrow a,\tilde{a},\
+%    \tilde{a}\leftarrow{\neg a}
+    \}
+    \]
+  \item<3-> $\widetilde{P}$ has two stable models, $\{a\}$ and $\{\widetilde{a}\}$
+  \item<4-> This induces the stable models $\{a\}$ and $\emptyset$ of $P$
+  \end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------
+%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../main"
+%%% End:

@@ -1,0 +1,264 @@
+%------------------------------------------------------------
+\begin{frame}[c]{Propositional theories}
+
+\begin{itemize}
+\item Formulas are formed from
+  \begin{itemize}
+  \item atoms in $\mathcal{A}$
+  \item $\bot$
+  \end{itemize}
+using
+  \begin{itemize}
+  \item conjunction ($\wedge$)
+  \item disjunction ($\vee$)
+  \item implication ($\rightarrow$)
+  \end{itemize}
+\item <2-> Notation
+  \begin{eqnarray*}
+    \top   &=& (\bot\rightarrow\bot)
+    \\
+    {\neg \phi} &=& (\phi   \rightarrow\bot)
+  \pause
+  \end{eqnarray*}
+\item <3-> A \alert{propositional theory} is a finite set of formulas
+\end{itemize}
+
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Reduct}
+  \begin{itemize}
+  \item<1->
+    The satisfaction relation $X\models \phi$ between a set~$X$ of atoms and\\
+    a (set of) formula(s) $\phi$ is defined as in propositional logic
+  \item<2->
+    The \alert{reduct}, $\reduct{\phi}{X}$, of a formula $\phi$ relative to a set $X$ of atoms
+    \pause[3]%
+    is defined recursively as follows:
+    \begin{itemize}
+    \item <3-> % $\reduct{\phi}{X}=\bot$ \quad\qquad\qquad
+      $\reduct{\phi}{X}=\rlap{$\bot$}\phantom{(\reduct{\psi}{X} \circ \reduct{\varphi}{X})}$
+      \quad
+      if  $X\not\models \phi$
+    \item <4-> % \rlap{$\reduct{\phi}{X}=\phi$} \quad\qquad\qquad
+      $\reduct{\phi}{X}=\rlap{$\phi$}\phantom{(\reduct{\psi}{X} \circ \reduct{\varphi}{X})}$
+      \quad
+      if  $\phi\in X$
+    \item <5-> $\reduct{\phi}{X}=(\reduct{\psi}{X} \circ \reduct{\varphi}{X})$
+      \quad
+      if  $X\models \phi$
+      and  $\phi=(\psi\circ\varphi)$ for $\circ\in\{\wedge,\vee,\rightarrow\}$
+      \medskip
+    \item <6->
+      If $\phi=\;{\neg \psi}=(\psi\rightarrow\bot)$,\\
+      then $\reduct{\phi}{X}=(\bot\rightarrow\bot)=\top$, if $X\not\models \psi$,
+      and $\reduct{\phi}{X}=\bot$, otherwise
+    \end{itemize}
+    \medskip
+  \item <7->
+    The \alert{reduct}, $\reduct{\Phi}{X}$, of a propositional theory $\Phi$ relative to
+    a set $X$ of atoms is defined as
+    \
+    \(
+    \reduct{\Phi}{X}
+    =
+    \{\reduct{\phi}{X} \mid \phi\in \Phi\}
+    \)
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Stable models}
+  \begin{itemize}
+  \item<1->
+    A set~$X$ of atoms satisfies a propositional theory~$\Phi$, written $X\models\Phi$,
+    \\
+    if $X\models \phi$ for each $\phi\in\Phi$
+  \item<2->
+    The set of all $\subseteq$-minimal sets of atoms satisfying a propositional
+    theory~$\Phi$ is denoted by $\min_\subseteq(\Phi)$
+    \medskip
+  \item<3->
+    A set $X$ of atoms is a \alert{stable model} of a propositional theory~$\Phi$,
+    \\
+    if $X\in\min_\subseteq(\reduct{\Phi}{X})$
+    \medskip
+  \item<4->
+    If $X$ is a stable model of~$\Phi$, then
+    \begin{itemize}
+    \item $X\models\Phi$ ~and
+    \item $\min_\subseteq(\reduct{\Phi}{X})=\{X\}$
+    \end{itemize}
+  \item<5-> \structure{Note}
+    In general, this does not imply $X\in\min_\subseteq(\Phi)$!
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Two examples}
+  \begin{itemize}
+  \item
+    \(
+    \Phi_1=\{p\vee(p\rightarrow (q\wedge r))\}
+    \)
+    \begin{itemize}
+    \item <2-> For $X=\{p,q,r\}$, we get\\
+      \(
+      \reduct{\Phi_1}{\{p,q,r\}}=\{p\vee(p\rightarrow (q\wedge r))\}
+      \)
+      \onslide<3->
+      and
+      \(
+      \min_\subseteq(\reduct{\Phi_1}{\{p,q,r\}})=\{\emptyset\}
+      \)
+      \KO
+    \item <4-> For $X=\emptyset$, we get\\
+      \(
+      \reduct{\Phi_1}{\emptyset}=\{\bot\vee(\bot\rightarrow \bot)\}
+      \)
+      \onslide<5->
+      and
+      \(
+      \min_\subseteq(\reduct{\Phi_1}{\emptyset})=\{\emptyset\}
+      \)
+      \OK
+    \end{itemize}
+  \item[]
+  \item <6->
+    \(
+    \Phi_2=\{p\vee({\neg p}\rightarrow (q\wedge r))\}
+    \)
+    \begin{itemize}
+    \item <7-> For $X=\emptyset$, we get\\
+      \(
+      \reduct{\Phi_2}{\emptyset}=\{\bot\}
+      \)
+      \onslide<8->
+      and
+      \(
+      \min_\subseteq(\reduct{\Phi_2}{\emptyset})=\emptyset
+      \)
+      \KO
+    \item <9-> For $X=\{p\}$, we get\\
+      \(
+      \reduct{\Phi_2}{\{p\}}=\{p\vee(\bot\rightarrow \bot)\}
+      \)
+      \onslide<10->
+      and
+      \(
+      \min_\subseteq(\reduct{\Phi_2}{\{p\}})=\{\emptyset\}
+      \)
+      \KO
+    \item <11-> For $X=\{q,r\}$, we get\\
+      \(
+      \reduct{\Phi_2}{\{q,r\}}=\{\bot\vee(\top\rightarrow (q\wedge r))\}
+      \)
+      \onslide<12->
+      and
+      \(
+      \min_\subseteq(\reduct{\Phi_2}{\{q,r\}})=\{\{q,r\}\}
+      \)
+      \OK
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}{Relationship to logic programs}
+\bigskip
+\begin{itemize}
+\item<1->
+  The translation, $\tau[(\phi\leftarrow \psi)]$, of a rule~$(\phi\leftarrow \psi)$
+  is defined as follows:%
+  \pause[2]
+  \begin{itemize}
+  \item $\tau[(\phi\leftarrow \psi)]=(\tau[\psi]\rightarrow\tau[\phi])$
+  \item $\tau[\bot]=\bot$
+  \item $\tau[\top]=\top$
+  \item $\tau[\phi]=\phi$ \qquad if $\phi$ is an atom
+  \item $\tau[{\neg \phi}]=\;{\neg \tau[\phi]}$
+  \item $\tau[(\phi,\psi)]=(\tau[\phi]\wedge\tau[\psi])$
+  \item $\tau[(\phi;\psi)]=(\tau[\phi]\vee\tau[\psi])$
+  \end{itemize}
+\smallskip
+\item <3-> The translation of a logic program~$P$ is $\tau[P]=\{\tau[r]\mid r\in P\}$
+\medskip
+\item <4-> Given a logic program~$P$ and a set~$X$ of atoms,
+
+  $X$ is a stable model of~$P$
+  iff
+  $X$ is a stable model of~$\tau[P]$
+\end{itemize}
+
+\end{frame}
+%------------------------------------------------------------
+\begin{frame}[c]{Logic programs as propositional theories}
+  \begin{itemize}
+  \item<1->
+    The normal logic program
+    \(
+    P
+    =
+    \{
+    p \leftarrow {\neg q}, \
+    q \leftarrow {\neg p}
+    \}
+    \)\\
+    corresponds to
+    \(
+    \tau[P]
+    =
+    \{
+    {\neg q}\rightarrow p, \
+    {\neg p}\rightarrow q
+    \}
+    \)
+    \begin{itemize}
+    \item<2-> stable models: $\{p\}$ and $\{q\}$
+    \end{itemize}
+    \medskip
+  \item<3->
+    The disjunctive logic program
+    \(
+    P
+    =
+    \{
+    p\;;q \leftarrow
+    \}
+    \)\\
+    corresponds to
+    \(
+    \tau[P]
+    =
+    \{
+    \top \rightarrow p\vee q
+    \}
+    \)
+    \begin{itemize}
+    \item<4-> stable models: $\{p\}$ and $\{q\}$
+    \end{itemize}
+    \medskip
+  \item<5->
+    The nested logic program
+    \(
+    P
+    =
+    \{
+    p \leftarrow {\neg {\neg p}}
+    \}
+    \)\\
+    corresponds to
+    \(
+    \tau[P]
+    =
+    \{
+    {\neg {\neg p}}\rightarrow p
+    \}
+    \)
+    \begin{itemize}
+    \item<6-> stable models: $\emptyset$ and $\{p\}$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------
+%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../main"
+%%% End:
