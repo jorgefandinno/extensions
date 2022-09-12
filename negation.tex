@@ -1,184 +1,184 @@
 % ----------------------------------------------------------------------
 \begin{frame}[c]{Motivation}
   \begin{itemize}
-  \item Classical versus default negation
-    \bigskip
-    \begin{itemize}\itemsep 1ex
-    \item<1-> \structure{Symbol}  $-$ and $\neg$
-    \item<2-> \structure{Idea}
-      \begin{itemize}
-      \item $\rlap{${-a}$}\phantom{{\neg a}}\ \approx\ {-a}   \in X$
-      \item ${\neg a}\ \approx   \quad a\notin X$
-      \end{itemize}
-    \item<3-> \structure{Example}
-      \begin{itemize}
-      \item $\mathit{cross}\leftarrow{-\mathit{train}}$
-      \item $\mathit{cross}\leftarrow{\neg \mathit{train}}$
-      \end{itemize}
-    \end{itemize}
+    \item Classical versus default negation
+          \bigskip
+          \begin{itemize}\itemsep 1ex
+            \item<1-> \structure{Symbol}  $-$ and $\neg$
+            \item<2-> \structure{Idea}
+                  \begin{itemize}
+                    \item $\rlap{${-a}$}\phantom{{\neg a}}\ \approx\ {-a}   \in X$
+                    \item ${\neg a}\ \approx   \quad a\notin X$
+                  \end{itemize}
+            \item<3-> \structure{Example}
+                  \begin{itemize}
+                    \item $\mathit{cross}\leftarrow{-\mathit{train}}$
+                    \item $\mathit{cross}\leftarrow{\neg \mathit{train}}$
+                  \end{itemize}
+          \end{itemize}
   \end{itemize}
 \end{frame}
 % ----------------------------------------------------------------------
 \begin{frame}{Classical negation}
   \begin{itemize}
-  \item<1-3> We consider logic programs in negation normal form
-    \begin{itemize}
-    \item That is, classical negation is applied to atoms only
-    \end{itemize}
-  \item<2-> Given an alphabet $\mathcal{A}$ of atoms,
-    let $\overline{\mathcal{A}}=\{{-a}\mid a\in\mathcal{A}\}$
-    such that $\mathcal{A}\cap\overline{\mathcal{A}}=\emptyset$
-  \item<3-> Given a program $P$ over $\mathcal{A}$, classical negation is encoded by adding
-    \[
-    P^-
-    =
-    \{a \leftarrow b,{-b} \mid a\in(\mathcal{A}\cup\overline{\mathcal{A}}), b\in \mathcal{A}\}
-    \]
-    \smallskip
-  \item<4->
-    A set~$X$ of atoms is a \alert{stable model} of a program~$P$
-    over $\mathcal{A}\cup\overline{\mathcal{A}}$,
-    \\
-    if
-    $X$ is a stable model of $P\cup P^-$
+    \item<1-3> We consider logic programs in negation normal form
+          \begin{itemize}
+            \item That is, classical negation is applied to atoms only
+          \end{itemize}
+    \item<2-> Given an alphabet $\mathcal{A}$ of atoms,
+          let $\overline{\mathcal{A}}=\{{-a}\mid a\in\mathcal{A}\}$
+          such that $\mathcal{A}\cap\overline{\mathcal{A}}=\emptyset$
+    \item<3-> Given a program $P$ over $\mathcal{A}$, classical negation is encoded by adding
+          \[
+            P^-
+            =
+            \{ \leftarrow b,{-b} \mid a\in(\mathcal{A}\cup\overline{\mathcal{A}}), b\in \mathcal{A}\}
+          \]
+          \smallskip
+    \item<4->
+          A set~$X$ of atoms is a \alert{stable model} of a program~$P$
+          over $\mathcal{A}\cup\overline{\mathcal{A}}$,
+          \\
+          if
+          $X$ is a stable model of $P\cup P^-$
   \end{itemize}
 \end{frame}
 % ----------------------------------------------------------------------
 \begin{frame}{An example}
   \begin{itemize}
-  \item <1-> The program
-    \[
-    P
-    \ =\
-    \{ a \leftarrow {\neg b}, \ b \leftarrow {\neg a}\}
-    \cup
-    \{c\leftarrow b,\ {-c}\leftarrow b\}
-    \]
-  \item<2-> [] induces
-    \[
-    P^-
-    =
-    \left\{
-      \begin{array}{rclp{2pt}rclp{2pt}rcl}
-          a &\leftarrow& a,{-a} &&  a &\leftarrow& b,{-b} &&  a &\leftarrow& c,{-c}\\
-        {-a}&\leftarrow& a,{-a} &&{-a}&\leftarrow& b,{-b} &&{-a}&\leftarrow& c,{-c}\\
-          b &\leftarrow& a,{-a} &&  b &\leftarrow& b,{-b} &&  b &\leftarrow& c,{-c}\\
-        {-b}&\leftarrow& a,{-a} &&{-b}&\leftarrow& b,{-b} &&{-b}&\leftarrow& c,{-c}\\
-          c &\leftarrow& a,{-a} &&  c &\leftarrow& b,{-b} &&  c &\leftarrow& c,{-c}\\
-        {-c}&\leftarrow& a,{-a} &&{-c}&\leftarrow& b,{-b} &&{-c}&\leftarrow& c,{-c}\\
-      \end{array}
-    \right\}
-    \]
-  \item<3-> The stable models of $P$ are given by the ones of $P\cup P^-$, viz $\{a\}$
+    \item <1-> The program
+          \[
+            P
+            \ =\
+            \{ a \leftarrow {\neg b}, \ b \leftarrow {\neg a}\}
+            \cup
+            \{c\leftarrow b,\ {-c}\leftarrow b\}
+          \]
+    \item<2-> [] induces
+          \[
+            P^-
+            =
+            \left\{
+            \begin{array}{rclp{2pt}rclp{2pt}rcl}
+               & \leftarrow & a,{-a} &  &  & \leftarrow & b,{-b} &  &  & \leftarrow & c,{-c} \\
+               & \leftarrow & a,{-a} &  &  & \leftarrow & b,{-b} &  &  & \leftarrow & c,{-c} \\
+               & \leftarrow & a,{-a} &  &  & \leftarrow & b,{-b} &  &  & \leftarrow & c,{-c} \\
+               & \leftarrow & a,{-a} &  &  & \leftarrow & b,{-b} &  &  & \leftarrow & c,{-c} \\
+               & \leftarrow & a,{-a} &  &  & \leftarrow & b,{-b} &  &  & \leftarrow & c,{-c} \\
+               & \leftarrow & a,{-a} &  &  & \leftarrow & b,{-b} &  &  & \leftarrow & c,{-c} \\
+            \end{array}
+            \right\}
+          \]
+    \item<3-> The stable models of $P$ are given by the ones of $P\cup P^-$, viz $\{a\}$
   \end{itemize}
 \end{frame}
 %------------------------------------------------------------
-\begin{frame}{Properties}
-  \bigskip
-  \begin{itemize}
-  \item The only inconsistent stable ``model'' is~$X=\mathcal{A}\cup\overline{\mathcal{A}}$
-  \item <2->[] Strictly speaking,
-    an inconsistemt set like $\mathcal{A}\cup\overline{\mathcal{A}}$ is not a model
-    \medskip
-  \item <3-> For a logic program~$P$ over $\mathcal{A}\cup\overline{\mathcal{A}}$,
-    exactly one of the following two cases applies:
-    \begin{enumerate}
-    \item All stable models of~$P$ are consistent or
-    \item $X=\mathcal{A}\cup\overline{\mathcal{A}}$ is the only stable model of~$P$
-    \end{enumerate}
-  \end{itemize}
-\end{frame}
+% \begin{frame}{Properties}
+%   \bigskip
+%   \begin{itemize}
+%     \item The only inconsistent stable ``model'' is~$X=\mathcal{A}\cup\overline{\mathcal{A}}$
+%     \item <2->[] Strictly speaking,
+%           an inconsistent set like $\mathcal{A}\cup\overline{\mathcal{A}}$ is not a model
+%           \medskip
+%     \item <3-> For a logic program~$P$ over $\mathcal{A}\cup\overline{\mathcal{A}}$,
+%           exactly one of the following two cases applies:
+%           \begin{enumerate}
+%             \item All stable models of~$P$ are consistent or
+%             \item $X=\mathcal{A}\cup\overline{\mathcal{A}}$ is the only stable model of~$P$
+%           \end{enumerate}
+%   \end{itemize}
+% \end{frame}
 %------------------------------------------------------------
 \begin{frame}[c]{Train spotting}
 
-\begin{itemize}\itemsep 5pt
-\item<1-2,13>
-  \(
-  P_1=\{\mathit{cross}\leftarrow{\neg \mathit{train}}\}
-  \)
-  \begin{itemize}
-  \item<2,13> stable model: $\{\mathit{cross}\}$
-  \end{itemize}
-\item<1,3-4,13>
-  \(
-  P_2=\{\mathit{cross}\leftarrow{-\mathit{train}}\}
-  \)
-  \begin{itemize}
-  \item<4,13> stable model: $\emptyset$
-  \end{itemize}
-\item<1,5-6,13>
-  \(
-  P_3=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
+  \begin{itemize}\itemsep 5pt
+    \item<1-2,13>
+          \(
+          P_1=\{\mathit{cross}\leftarrow{\neg \mathit{train}}\}
+          \)
+          \begin{itemize}
+            \item<2,13> stable model: $\{\mathit{cross}\}$
+          \end{itemize}
+    \item<1,3-4,13>
+          \(
+          P_2=\{\mathit{cross}\leftarrow{-\mathit{train}}\}
+          \)
+          \begin{itemize}
+            \item<4,13> stable model: $\emptyset$
+          \end{itemize}
+    \item<1,5-6,13>
+          \(
+          P_3=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
           {-\mathit{train}}\leftarrow\}
-  \)
-  \begin{itemize}
-  \item<6,13> stable model: $\{\mathit{cross},{-\mathit{train}}\}$
-  \end{itemize}
-\item<1,7-8,13>
-  \(
-  P_4=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
+          \)
+          \begin{itemize}
+            \item<6,13> stable model: $\{\mathit{cross},{-\mathit{train}}\}$
+          \end{itemize}
+    \item<1,7-8,13>
+          \(
+          P_4=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
           {-\mathit{train}}\leftarrow, \
           {-\mathit{cross}}\leftarrow\}
-  \)
-  \begin{itemize}
-  \item<8,13> stable model: $\{\mathit{cross},{-\mathit{cross}},\mathit{train},{-\mathit{train}}\}$
-  \end{itemize}
-\item<1,9-10,13>
-  \(
-  P_5=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
+          \)
+          \begin{itemize}
+            \item<8,13> no stable model
+          \end{itemize}
+    \item<1,9-10,13>
+          \(
+          P_5=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
           {-\mathit{train}}\leftarrow{\neg \mathit{train}}\}
-  \)
-  \begin{itemize}
-  \item<10,13> stable model: $\{\mathit{cross},{-\mathit{train}}\}$
-  \end{itemize}
-\item<1,11-12,13>
-  \(
-  P_6=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
+          \)
+          \begin{itemize}
+            \item<10,13> stable model: $\{\mathit{cross},{-\mathit{train}}\}$
+          \end{itemize}
+    \item<1,11-12,13>
+          \(
+          P_6=\{\mathit{cross}\leftarrow{-\mathit{train}}, \
           {-\mathit{train}}\leftarrow{\neg \mathit{train}}, \
           {-\mathit{cross}}\leftarrow\}
-  \)
-  \begin{itemize}
-  \item<12,13> no stable model
+          \)
+          \begin{itemize}
+            \item<12,13> no stable model
+          \end{itemize}
   \end{itemize}
-\end{itemize}
 
 \end{frame}
 % ----------------------------------------------------------------------
 \begin{frame}{Default negation in rule heads}
 
   \begin{itemize}
-  \item<1-3> We consider logic programs with default negation in rule heads
-  \item<2-> Given an alphabet $\mathcal{A}$ of atoms,
-    let
-    \(
-    \widetilde{\mathcal{A}}=\{\widetilde{a}\mid a\in\mathcal{A}\}
-    \)
-    such that $\mathcal{A}\cap\widetilde{\mathcal{A}}=\emptyset$
-  \item<3-> Given a program $P$ over $\mathcal{A}$, consider the program
-    \begin{eqnarray*}
-      \widetilde{P}
-      &=&\phantom{\cup\ }
-%      \{                           r \mid r\in P, {\neg a}\neq\head{r}  \}
-\{r\in P\mid \head{r}\neq{\neg a}\}
-      \\
-      &&\cup\
-%      \{  \tilde{a}\leftarrow\body{r}\mid r\in P, {\neg a}=   \head{r}  \}
-\{\leftarrow \body{r}\cup\{{\neg \widetilde{a}}\}\mid r\in P \text{ and } \head{r}={\neg a}\}
-      \\
-      &&\cup\
-      % \{
-      % \leftarrow a,\tilde{a},\quad
-      % \tilde{a}\leftarrow{\neg a}
-      % \mid
-      % {\neg a}\in\head{P}
-      %   \}
-\{\widetilde{a}\leftarrow{\neg a}\mid r\in P \text{ and } \head{r}={\neg a}\}
-    \end{eqnarray*}
-    \smallskip
-  \item<4->
-    A set~$X$ of atoms is a \alert{stable model} of a program~$P$ (with default negation in rule heads) over $\mathcal{A}$,
-    \\
-    if $X=Y\cap\mathcal{A}$ for some stable model $Y$ of $\widetilde{P}$ over $\mathcal{A}\cup\widetilde{\mathcal{A}}$
+    \item<1-3> We consider logic programs with default negation in rule heads
+    \item<2-> Given an alphabet $\mathcal{A}$ of atoms,
+          let
+          \(
+          \widetilde{\mathcal{A}}=\{\widetilde{a}\mid a\in\mathcal{A}\}
+          \)
+          such that $\mathcal{A}\cap\widetilde{\mathcal{A}}=\emptyset$
+    \item<3-> Given a program $P$ over $\mathcal{A}$, consider the program
+          \begin{eqnarray*}
+            \widetilde{P}
+            &=&\phantom{\cup\ }
+            %      \{                           r \mid r\in P, {\neg a}\neq\head{r}  \}
+            \{r\in P\mid \head{r}\neq{\neg a}\}
+            \\
+            &&\cup\
+            %      \{  \tilde{a}\leftarrow\body{r}\mid r\in P, {\neg a}=   \head{r}  \}
+            \{\leftarrow \body{r}\cup\{{\neg \widetilde{a}}\}\mid r\in P \text{ and } \head{r}={\neg a}\}
+            \\
+            &&\cup\
+            % \{
+            % \leftarrow a,\tilde{a},\quad
+            % \tilde{a}\leftarrow{\neg a}
+            % \mid
+            % {\neg a}\in\head{P}
+            %   \}
+            \{\widetilde{a}\leftarrow{\neg a}\mid r\in P \text{ and } \head{r}={\neg a}\}
+          \end{eqnarray*}
+          \smallskip
+    \item<4->
+          A set~$X$ of atoms is a \alert{stable model} of a program~$P$ (with default negation in rule heads) over $\mathcal{A}$,
+          \\
+          if $X=Y\cap\mathcal{A}$ for some stable model $Y$ of $\widetilde{P}$ over $\mathcal{A}\cup\widetilde{\mathcal{A}}$
   \end{itemize}
 \end{frame}
 % ----------------------------------------------------------------------
